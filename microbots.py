@@ -69,8 +69,11 @@ def main():
     print("For entering the following coordinates, the rows/cols are 0 indexed")
     start = input("Enter start row,col ->").split(",")
     end = input("Enter end row,col ->").split(",")
-    path = find_shortest_path(board[int(start[0])][int(start[1])], board[int(end[0])][int(end[1])], board)
+    startCell = board[int(start[0])][int(start[1])]    
+    endCell = board[int(end[0])][int(end[1])]
     print()
+    print(f"Going from {startCell} to {endCell}")
+    path = find_shortest_path(startCell,endCell , board)
     for c in path:
         print(str(c), end=" ")
     
