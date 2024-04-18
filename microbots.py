@@ -66,8 +66,10 @@ def main():
     ]
 
     build_board(board)
-
-    path = find_shortest_path(board[1][0],board[2][0], board)
+    print("For entering the following coordinates, the rows/cols are 0 indexed")
+    start = input("Enter start row,col ->").split(",")
+    end = input("Enter end row,col ->").split(",")
+    path = find_shortest_path(board[int(start[0])][int(start[1])], board[int(end[0])][int(end[1])], board)
     print()
     for c in path:
         print(str(c), end=" ")
