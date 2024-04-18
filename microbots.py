@@ -64,18 +64,24 @@ def main():
         [Cell(Fore.RED, 3), Cell(Fore.YELLOW, 4), Cell(Fore.WHITE, 3), Cell(Fore.RED, 1), Cell(Fore.BLUE, 5), Cell(Fore.YELLOW, 6)],
         [Cell(Fore.BLUE, 3), Cell(Fore.GREEN, 4), Cell(Fore.WHITE, 5), Cell(Fore.GREEN, 1), Cell(Fore.RED, 5), Cell(Fore.YELLOW, 1)],
     ]
-
-    build_board(board)
-    print("For entering the following coordinates, the rows/cols are 0 indexed")
-    start = input("Enter start row,col ->").split(",")
-    end = input("Enter end row,col ->").split(",")
-    startCell = board[int(start[0])][int(start[1])]    
-    endCell = board[int(end[0])][int(end[1])]
-    print()
-    print(f"Going from {startCell} to {endCell}")
-    path = find_shortest_path(startCell,endCell , board)
-    for c in path:
-        print(str(c), end=" ")
+    again = ""
+    while again.lower != "q":
+        try:
+            build_board(board)
+            print("For entering the following coordinates, the rows/cols are 0 indexed")
+            start = input("Enter start row,col -> ").split(",")
+            end = input("Enter end row,col -> ").split(",")
+            startCell = board[int(start[0])][int(start[1])]    
+            endCell = board[int(end[0])][int(end[1])]
+            print()
+            print(f"Going from {startCell} to {endCell}")
+            path = find_shortest_path(startCell,endCell , board)
+            for c in path:
+                print(str(c), end=" ")
+            print()
+        except:
+            print("An error occurred. Make sure your input is in the form #,#")
+        again = input("Enter q to quit or anything else to go again -> ")
     
 
 if __name__ == "__main__":
