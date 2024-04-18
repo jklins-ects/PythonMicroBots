@@ -7,6 +7,9 @@ class Cell:
         self.row = None
         self.col = None
 
+    def similar(self, other):
+        return self.color == other.color or self.val == other.val
+    
     def __str__(self):
         return f'{self.color}{self.val}{Style.RESET_ALL}'
 
@@ -22,18 +25,16 @@ def build_board(board):
             board[row][col].col = col
         print()
 
-def cells_have_common(cell1, cell2):
-    return cell1.val == cell2.val or cell1.color == cell2.color
 
 def find_possible_moves(t1, board):
     possible = []
     for i in range(len(board)):
         #checks downward
-        if i != t1.row and cells_have_common(board[i][t1.col], t1):
+        if i != t1.row and t1.similar(board[i][t1.col]):
             possible.append(board[i][t1.col])
         #checks across
     for j in range(len(board[t1.row])):
-         if j != t1.col and cells_have_common(board[t1.row][j], t1):
+         if j != t1.col and t1.similar(board[t1.row][j]):
             possible.append(board[t1.row][j])
     return possible
 
