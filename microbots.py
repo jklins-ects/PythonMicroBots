@@ -74,7 +74,7 @@ def main():
         [Cell(Fore.BLUE, 3), Cell(Fore.GREEN, 4), Cell(Fore.WHITE, 5), Cell(Fore.GREEN, 1), Cell(Fore.RED, 5), Cell(Fore.YELLOW, 1)],
     ]
     again = ""
-    while again.lower != "q":
+    while again.lower() != "q":
         try:
             build_board(board)
             print("For entering the following coordinates, the rows/cols are 0 indexed")
