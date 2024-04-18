@@ -1,22 +1,25 @@
+from __future__ import annotations
 from colorama import Fore, Style
 
 class Cell:
-    def __init__(self, color, val):
+    def __init__(self, color:str, val:int):
         self.color = color
         self.val = val
-        self.row = None
-        self.col = None
+        self.row:int
+        self.col:int
 
-    def similar(self, other):
+    def similar(self, other:Cell):
+        """returns true if the val or color are the same"""
         return self.color == other.color or self.val == other.val
     
     def __str__(self):
         return f'{self.color}{self.val}{Style.RESET_ALL}'
 
-def print_cell(cell):
+def print_cell(cell:Cell):
     print(cell, end=' ')
 
-def build_board(board):
+def build_board(board:list):
+    """prints the board to screen. Also, assigns row/col to each cell (this was a patch)"""
     for row in range(len(board)):
         for col in range(len(board[row])):
             print_cell(board[row][col])
@@ -26,7 +29,8 @@ def build_board(board):
         print()
 
 
-def find_possible_moves(t1, board):
+def find_possible_moves(t1:Cell, board:list):
+    """checks for similar cells in the provided cells row and column"""
     possible = []
     for i in range(len(board)):
         #checks downward
@@ -38,18 +42,22 @@ def find_possible_moves(t1, board):
             possible.append(board[t1.row][j])
     return possible
 
-def find_shortest_path(t1, t2, board, visited = []):
-
-    if t1 == t2:
-        visited = visited + [t1]
+def find_shortest_path(start:Cell, end:Cell, board:list, visited:list = []):
+    """recursively searches for the shortest path to the end with the given start"""
+    if start == end:
+        visited = visited + [start]
         return visited 
     else:
-        possible = find_possible_moves(t1, board)
+        possible = find_possible_moves(start, board)
         shortest = []
-        checked = visited + [t1]
+        #create a different array that we can build on
+        checked = visited + [start]
         for p in possible:
             if not p in checked:
-                path = find_shortest_path(p, t2, board, checked)
+                path = find_shortest_path(p, end, board, checked)
+                #this makes sure the len of path is at least 1 (meaning we found the target)
+                #without that, it's possible there are no moves because we already visited a cell
+                #that is part of a shorter path. That would return a 0 length and would not work. 
                 if len(shortest) == 0 or (len(path) < len(shortest) and len(path) > 0):
                     shortest = path
        
