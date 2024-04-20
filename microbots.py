@@ -17,17 +17,11 @@ class Cell:
         """returns a colored string with the value of the cell"""
         return f'{self.color}{self.val}{Style.RESET_ALL}'
 
-def print_cell(cell:Cell) -> None:
-    print(cell, end=' ')
-
 def print_board(board:list) -> None:
     """prints the board to screen. Also, assigns row/col to each cell (this was a patch)"""
     for row in range(len(board)):
         for col in range(len(board[row])):
-            print_cell(board[row][col])
-            #doing this to make life easier...should be set at instantiation
-            board[row][col].row = row
-            board[row][col].col = col
+            print(board[row][col], end=' ')
         print()
 
 
