@@ -26,7 +26,7 @@ def print_board(board:list) -> None:
         print()
 
 
-def find_possible_moves(t1:Cell, board:list) -> list:
+def find_possible_moves(t1:Cell|None, board:list) -> list:
     """checks for similar cells in the provided cells row and column"""
     possible = []
     for i in range(len(board)):
@@ -39,7 +39,7 @@ def find_possible_moves(t1:Cell, board:list) -> list:
             possible.append(board[t1.row][j])
     return possible
 
-def find_shortest_path(start:Cell, end:Cell, board:list, visited:list = []) -> list:
+def find_shortest_path(start:Cell|None, end:Cell|None, board:list, visited:list = []) -> list:
     """recursively searches for the shortest path to the end with the given start"""
     if start == end:
         visited = visited + [start]
@@ -107,15 +107,30 @@ def find_cell_by_values(color:str, val:int, board: list) -> Cell|None:
 def convert_string_to_cells(path_str, board) -> list[Cell]:
     cell_strs = path_str.split(",")
     cell_list = []
-    for s in cell_strs:
-        color = extract_color(s[0])
-        value = int(s[1])
-        the_cell = find_cell_by_values(color, value, board)
-        if the_cell == None:
-            return []
-        else:
-            cell_list.append(the_cell)
-    return cell_list
+    try:
+
+        for s in cell_strs:
+            color = extract_color(s[0])
+            value = int(s[1])
+            the_cell = find_cell_by_values(color, value, board)
+            if the_cell == None:
+                return []
+            else:
+                cell_list.append(the_cell)
+        return cell_list
+    except:
+        return []
+
+def validate_path(start:Cell|None, end:Cell|None, path:list[Cell], board:list) -> bool:
+    if start != path[0]:
+        return False
+    if end != path[-1]:
+        return False
+    for i in range(len(path) -1):
+        if not path[i+1] in find_possible_moves(path[i], board):
+            return False
+    return True
+
 
 def main() -> None:
     board = get_board()
@@ -150,10 +165,28 @@ def main() -> None:
             print(f"Go from {start} to {end}. ")
             print("Enter your input comma separated with the form C# where C is the first letter of the color, and # is the number")
             print("Colors: M, Y, G, W, B, R")
-            path_str = input("Enter your path (eg. R6,R4,Y4,Y6) -> ")
-            path_cell = convert_string_to_cells(path_str, board)
+            path_cell = []
+            while len(path_cell) == 0:
+                path_str = input("Enter your path (eg. R6,R4,Y4,Y6) -> ")
+                path_cell = convert_string_to_cells(path_str, board)
+                if len(path_cell) == 0:
+                    print("Invalid path - check color/nums and format")
+                else:
+                    valid = validate_path(start, end, path_cell, board)
+                    if not valid:
+                        print("Invalid path - does not follow rules")
+                        path_cell=[]
+
             print("Your path: ", end="")
             print_path(path_cell)
+            print(f"You got it in {len(path_cell)-1} moves.")
+            shortest = find_shortest_path(start, end , board)
+            print(f"Here's my path: ", end="")
+            print_path(shortest)
+            if len(shortest) == len(path_cell):
+                print("You found the shortest path!")
+            else:
+                print("You did not find the shortest path.")
 
         elif again.lower() != "q":
             print("Invalid input. Enter p, s, or q.")
