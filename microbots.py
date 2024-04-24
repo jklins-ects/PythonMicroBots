@@ -79,22 +79,28 @@ def main() -> None:
     board = get_board()
     again = ""
     while again.lower() != "q":
-        try:
-            print_board(board)
-            print("For entering the following coordinates, the rows/cols are 0 indexed")
-            start = input("Enter start row,col -> ").split(",")
-            end = input("Enter end row,col -> ").split(",")
-            startCell = board[int(start[0])][int(start[1])]    
-            endCell = board[int(end[0])][int(end[1])]
-            print()
-            print(f"Going from {startCell} to {endCell}")
-            path = find_shortest_path(startCell,endCell , board)
-            for c in path:
-                print(str(c), end=" ")
-            print()
-        except:
-            print("An error occurred. Make sure your input is in range and in the form #,#")
-        again = input("Enter q to quit or anything else to go again -> ")
+        again = input("Micro bots! Enter p to play, s to solve, or q to quit -> ")
+        if again.lower() == "s":
+            try:
+                print_board(board)
+                print("For entering the following coordinates, the rows/cols are 0 indexed")
+                start = input("Enter start row,col -> ").split(",")
+                end = input("Enter end row,col -> ").split(",")
+                startCell = board[int(start[0])][int(start[1])]    
+                endCell = board[int(end[0])][int(end[1])]
+                print()
+                print(f"Going from {startCell} to {endCell}")
+                path = find_shortest_path(startCell,endCell , board)
+                for c in path:
+                    print(str(c), end=" ")
+                print()
+            except:
+                print("An error occurred. Make sure your input is in range and in the form #,#")
+        elif again.lower() == "p":
+            print("Let's play!")
+        elif again.lower() != "q":
+            print("Invalid input. Enter p, s, or q.")
+
     
 
 if __name__ == "__main__":
