@@ -19,7 +19,7 @@ class Cell:
         return f'{self.color}{self.val}{Style.RESET_ALL}'
 
 def print_board(board:list) -> None:
-    """prints the board to screen. Also, assigns row/col to each cell (this was a patch)"""
+    """prints the board to screen. """
     for row in range(len(board)):
         for col in range(len(board[row])):
             print(board[row][col], end=' ')
